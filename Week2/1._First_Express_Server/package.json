@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "awesome": "^0.0.7",
+    "express": "^4.17.2",
+    "favicons": "^6.2.2",
+    "font": "^0.0.4"
+  }
+}
