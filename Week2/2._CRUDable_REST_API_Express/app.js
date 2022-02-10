@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const uri = "/api/beers/";
+const uri = "/api/beers";
 const testData = [
   {
     id: 1,
@@ -19,31 +19,35 @@ const testData = [
 app.use(express.json());
 
 /*GET*/
-app.get("/beers", (req, res) => {
+app.get(uri, (req, res) => {
   res.send(testData);
 });
+
 /*GET/:ID*/
-app.get("/beers/:id", (req, res) => {
+app.get(`${uri}/:id`, (req, res) => {
   const requestId = parseInt(req.params.id);
+  console.log(requestId);
   let foundBeer;
   testData.forEach((beer) => {
     if (beer.id === requestId) {
       foundBeer = beer;
-    } else {
-      res.send(`beer with id of:${requestId} could not be found`);
     }
   });
-  res.send(foundBeer);
+  if (foundBeer !== null) {
+    res.send(foundBeer);
+  } else {
+    res.send(`beer with id of: ${requestId} could not be found`);
+  }
 });
 
 /*POST*/
-app.post("/beers", (req, res) => {
+app.post(uri, (req, res) => {
   testData.push(req.body);
   res.send(req.body);
 });
 
 /*PUT*/
-app.put("/beers/:id", (req, res) => {
+app.put(`${uri}/:id`, (req, res) => {
   const requestId = parseInt(req.params.id);
   const body = req.body;
 
@@ -62,7 +66,7 @@ app.put("/beers/:id", (req, res) => {
 });
 
 /*PATCH*/ //NOT DONE, CANNOT ONLY TAKE ONE VALUE AND CHANGE
-app.patch("/beers/:id", (req, res) => {
+app.patch(`${uri}/:id`, (req, res) => {
   const requestId = parseInt(req.params.id);
   const body = req.body;
 
@@ -81,7 +85,7 @@ app.patch("/beers/:id", (req, res) => {
 });
 
 /*DELETE*/
-app.delete("/beers/:id", (req, res) => {
+app.delete(`${uri}/:id`, (req, res) => {
   const requestId = parseInt(req.params.id);
   testData.forEach((beer) => {
     if (beer.id === requestId) {
