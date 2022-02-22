@@ -96,4 +96,7 @@ app.delete(`${uri}/:id`, (req, res) => {
   res.send(`Beer with id: ${requestId} has succesfully been deleted`);
 });
 
-app.listen(8080);
+const PORT = 8080;
+app.listen(PORT, (error) => {
+  console.log("Server is running on port", PORT);
+});

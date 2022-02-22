@@ -16,4 +16,8 @@ app.post("/mirror", (req, res) => {
   res.send(req.body);
 });
 
+app.get("/clientgreeting/:name", (req, res) => {
+  res.send({ greeing: `Hello there, ${req.params.name}` });
+});
+
 app.listen(8080);

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Worldclock</title>
+
+    <style>
+      * {
+        padding: 0px;
+        margin: 0px;
+        box-sizing: border-box;
+        font-family: sans-serif;
+        background-color: #868e96;
+      }
+
+      /*STRUCTURE*/
+      .container {
+        /*width: 1000px;*/
+        margin: 0 auto 0 auto;
+        display: grid;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /*COMPONENTS*/
+      .digital-clock {
+        display: grid;
+        grid-template-rows: 2fr 0.5fr;
+        justify-content: center;
+        align-content: center;
+        background-color: #212529;
+        width: 400px;
+        height: 200px;
+        border-radius: 25px;
+        border: 20px solid black;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.25);
+      }
+
+      h1 {
+        text-align: center;
+        display: block;
+        margin: 20px 0px 20px 0px;
+      }
+
+      span {
+        font-family: sans;
+        color: #c92a2a;
+        background-color: #212529;
+        text-align: center;
+      }
+
+      .time {
+        font-size: 90px;
+        align-self: center;
+        justify-self: center;
+        margin-top: 20px;
+        flex: 1 0;
+        letter-spacing: 5px;
+      }
+
+      .timezone {
+        text-align: center;
+        letter-spacing: 2px;
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+        background-color: #212529;
+        border-radius: 25px;
+        border: 5px solid black;
+      }
+
+      .timezone-continent {
+        font-size: 32px;
+        border-radius: 25px;
+      }
+
+      .timezone-city {
+        font-size: 18px;
+        border-radius: 25px;
+      }
+
+      .UTC {
+        font-size: 18px;
+      }
+
+      .timezone-dropdown-container {
+        margin-top: 30px;
+        align-self: center;
+        justify-self: center;
+      }
+      .timezone-dropdown {
+        background-color: #343a40;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Digital World Clock</h1>
+    <div class="container">
+      <div id="digital-clock" class="digital-clock">
+        <span id="time" class="time">##:##:##</span>
+        <span id="UTC" class="UTC"></span>
+      </div>
+      <div class="timezone">
+        <span id="timezone-continent" class="timezone-continent"></span>
+        <span id="timezone-city" class="timezone-city"></span>
+      </div>
+      <div class="timezone-dropdown-container">
+        <select name="dropdown" id="dropdown" class="timezone-dropdown">
+          <option>-select continent-</option>
+          <option value="America/New_York">America (East Coast)</option>
+          <option value="America/Los_Angeles">America (West Coast)</option>
+          <option value="Europe/Copenhagen">Europe (Copenhagen)</option>
+          <option value="Africa/Johannesburg">Africa (Johannesburg)</option>
+          <option value="Asia/Bangkok">Asia (Bangkok)</option>
+        </select>
+      </div>
+    </div>
+    <script>
+      const url = "http://worldtimeapi.org/api/timezone/";
+
+      const dropdown = document.getElementById("dropdown");
+      dropdown.addEventListener("change", () => {
+        worldtimeapiFetch(url + dropdown.value);
+      });
+
+      const worldtimeapiFetch = function (url) {
+        fetch(url)
+          .then((res) => res.json())
+          .then((res) => {
+            console.log(res);
+            const abbreviation = res.abbreviation;
+            const dateTime = res.datetime;
+            const timeZoneContinent = res.timezone.substring(
+              0,
+              res.timezone.indexOf("/")
+            );
+            const timeZoneCity = res.timezone
+              .substring(res.timezone.indexOf("/") + 1)
+              .replace("_", " ");
+
+            const time = res.datetime.substring(
+              dateTime.indexOf("T") + 1,
+              dateTime.indexOf(".")
+            );
+            const timeDisplacement = res.datetime.substring(26);
+            document.getElementById("time").innerText = time;
+            document.getElementById("timezone-continent").innerText =
+              timeZoneContinent;
+            document.getElementById("timezone-city").innerText = timeZoneCity;
+            document.getElementById(
+              "UTC"
+            ).innerText = `${timeDisplacement} hours`;
+          });
+      };
+    </script>
+  </body>
+</html>
