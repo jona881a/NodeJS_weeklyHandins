@@ -1,0 +1,17 @@
+* {
+}
+
+body {
+  background-color: green;
+}
+h1 {
+  text-align: center;
+  font-size: 90px;
+  color: brown;
+  font-family: sans-serif;
+  border-bottom: 2px solid black;
+}
+.container {
+  width: 600px;
+  margin: auto;
+}

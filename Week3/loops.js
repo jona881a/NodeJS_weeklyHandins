@@ -32,3 +32,4 @@ const expensivePhones = smartPhones.filter(
 );
 
 console.log(expensivePhones);
+console.log(smartPhones);
